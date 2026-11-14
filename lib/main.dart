@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:openfashion/features/Home/view/home_screen.dart';
+import 'package:openfashion/features/Home/view/home.dart';
 
 void main() {
   runApp(const MyApp());
