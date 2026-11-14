@@ -11,6 +11,7 @@ class CustomText extends StatelessWidget {
     this.overflow = TextOverflow.ellipsis,
     this.maxLines = 1,
     this.height = 1,
+    this.letter = 1,
   });
   final String text;
   final Color color;
@@ -20,6 +21,7 @@ class CustomText extends StatelessWidget {
   final TextOverflow overflow;
   final int maxLines;
   final double height;
+  final double letter;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class CustomText extends StatelessWidget {
         fontWeight: weight,
         fontFamily: fontFamily,
         height: height,
+        letterSpacing: letter,
       ),
     );
   }
