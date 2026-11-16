@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:openfashion/widgets/custom_line.dart';
 
-class Header extends StatelessWidget {
-  const Header({super.key, required this.title});
+class CheckoutHeader extends StatelessWidget {
+  const CheckoutHeader({super.key, required this.title, this.size = 28});
 
   final String title;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class Header extends StatelessWidget {
           child: CustomLine(
             text: title,
             isBlack: true,
-            size: 28,
+            size: size ?? 28,
             letter: 4,
             width: 160,
           ),

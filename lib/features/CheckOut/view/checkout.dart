@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:openfashion/core/constants/app_colors.dart';
+import 'package:openfashion/features/CheckOut/view/place_order.dart';
 import 'package:openfashion/features/CheckOut/widgets/checkout_header.dart';
+import 'package:openfashion/features/CheckOut/widgets/promo.dart';
 import 'package:openfashion/widgets/custom_cart.dart';
 import 'package:openfashion/widgets/custom_appbar_widget.dart';
 import 'package:openfashion/widgets/custom_button.dart';
 import 'package:openfashion/widgets/custom_text.dart';
-import 'package:openfashion/widgets/svg_icon.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({
@@ -27,29 +28,38 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
+  int selectedQty = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(isBlack: false),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15.0),
           child: Column(
             children: [
               Gap(25),
-              Header(title: 'Checkout'),
+              CheckoutHeader(title: 'Checkout'),
               Gap(10),
 
+              /// Cart
               CustomCart(
                 name: widget.name,
                 image: widget.image,
                 price: widget.price,
                 description: widget.description,
+                onChange: (value) {
+                  setState(() {
+                    selectedQty = value;
+                  });
+                },
               ),
 
-              promo(),
+              Promo(),
 
               Spacer(),
+
+              /// Total
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -60,7 +70,8 @@ class _CheckoutState extends State<Checkout> {
                     weight: FontWeight.w500,
                   ),
                   CustomText(
-                    text: '\$${widget.price}',
+                    text:
+                        '\$${((widget.price * selectedQty).toStringAsFixed(2))}',
                     color: AppColors.tertiary,
                     size: 16,
                     weight: FontWeight.w500,
@@ -68,7 +79,27 @@ class _CheckoutState extends State<Checkout> {
                 ],
               ),
               Gap(25),
-              CustomButton(onTap: () {}, title: 'Checkout', is_Svg: true),
+
+              /// Checkout Button
+              CustomButton(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PlaceOrder(
+                        name: widget.name,
+                        image: widget.image,
+                        price: widget.price,
+                        qty: selectedQty,
+                        total: widget.price * selectedQty,
+                        description: widget.description,
+                      ),
+                    ),
+                  );
+                },
+                title: 'Checkout',
+                is_Svg: true,
+              ),
               Gap(10),
             ],
           ),
@@ -76,50 +107,4 @@ class _CheckoutState extends State<Checkout> {
       ),
     );
   }
-}
-
-Widget promo() {
-  return Column(
-    children: [
-      Gap(15),
-      Divider(thickness: 1.5),
-      Gap(15),
-      Row(
-        children: [
-          SvgIcon('assets/svgs/promo.svg', AppColors.primary, 20),
-          Gap(15),
-          CustomText(
-            text: 'Apply Promo Code',
-            color: AppColors.primary,
-            size: 16,
-            weight: FontWeight.w500,
-          ),
-        ],
-      ),
-      Gap(15),
-      Divider(thickness: 1.5),
-      Gap(15),
-      Row(
-        children: [
-          SvgIcon('assets/svgs/delivery.svg', AppColors.primary, 30),
-          Gap(15),
-          CustomText(
-            text: 'Delivery',
-            color: AppColors.primary,
-            size: 16,
-            weight: FontWeight.w500,
-          ),
-          Spacer(),
-          CustomText(
-            text: 'Free',
-            color: AppColors.primary,
-            size: 16,
-            weight: FontWeight.w500,
-          ),
-        ],
-      ),
-      Gap(15),
-      Divider(thickness: 1.5),
-    ],
-  );
 }
