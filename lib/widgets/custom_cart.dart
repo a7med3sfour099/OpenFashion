@@ -11,12 +11,14 @@ class CustomCart extends StatefulWidget {
     required this.image,
     required this.price,
     required this.description,
+    required this.onChange,
   });
 
   final String name;
   final String image;
   final double price;
   final String description;
+  final Function(int) onChange;
 
   @override
   State<CustomCart> createState() => _CustomCartState();
@@ -31,14 +33,14 @@ class _CustomCartState extends State<CustomCart> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Gap(10),
-        Image.asset('${widget.image}', fit: BoxFit.cover, width: 120),
+        Image.asset(widget.image, fit: BoxFit.cover, width: 120),
         Gap(15),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Gap(10),
             CustomText(
-              text: '${widget.name}'.toUpperCase(),
+              text: widget.name.toUpperCase(),
               color: AppColors.primary,
               letter: 2,
               size: 16,
@@ -46,9 +48,9 @@ class _CustomCartState extends State<CustomCart> {
             ),
             Gap(7),
             SizedBox(
-              width: size.width * 0.6,
+              width: size.width * 0.55,
               child: CustomText(
-                text: '${widget.description}',
+                text: widget.description,
                 color: AppColors.secondary,
                 size: 14,
                 weight: FontWeight.w400,
@@ -61,6 +63,7 @@ class _CustomCartState extends State<CustomCart> {
                   setState(() {
                     if (number > 1) {
                       number--;
+                      widget.onChange(number);
                     }
                   });
                 }, 'assets/svgs/min.svg'),
@@ -70,13 +73,14 @@ class _CustomCartState extends State<CustomCart> {
                 qty(() {
                   setState(() {
                     number++;
+                    widget.onChange(number);
                   });
                 }, 'assets/svgs/plus.svg'),
               ],
             ),
             Gap(20),
             CustomText(
-              text: '\$${widget.price}',
+              text: '\$${(widget.price.toStringAsFixed(2))}',
               color: AppColors.tertiary,
               size: 18,
             ),
@@ -87,7 +91,7 @@ class _CustomCartState extends State<CustomCart> {
   }
 }
 
-Widget qty(onTap, svg) {
+Widget qty(Function() onTap, svg) {
   return GestureDetector(
     onTap: onTap,
     child: Container(

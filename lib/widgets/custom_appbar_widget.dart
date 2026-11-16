@@ -14,6 +14,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     final bgColor = isBlack ? Colors.black : Colors.white;
     final iconColor = isBlack ? Colors.white : Colors.black;
     return AppBar(
+      scrolledUnderElevation: 0,
+      elevation: 0,
       backgroundColor: bgColor,
       leading: SvgIcon('assets/svgs/Menu.svg', iconColor, 24),
       title: SvgIcon('assets/logo/logo-bg.svg', iconColor, 32),
